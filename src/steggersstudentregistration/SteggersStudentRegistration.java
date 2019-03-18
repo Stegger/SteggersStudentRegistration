@@ -30,6 +30,7 @@ public class SteggersStudentRegistration extends Application
         MainViewController controller = loader.getController();
         
         //Dependency injection
+        //Call a factory method for an object implementing the facade
         controller.setStudentRegistrationFacade(MockUserFacade.getInstance());
         
         Scene scene = new Scene(root);

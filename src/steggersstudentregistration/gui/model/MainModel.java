@@ -43,6 +43,8 @@ public class MainModel
     public void setStudentRegistrationFacade(IStundentRegistrationFacade facade)
     {
         this.facade = facade;
+        students.addAll(facade.getAllStudents());
+        String var = "It's almost 13:30 yay'";
     }
 
     /**

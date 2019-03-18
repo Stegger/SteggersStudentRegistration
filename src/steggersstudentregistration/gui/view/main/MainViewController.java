@@ -7,25 +7,27 @@ package steggersstudentregistration.gui.view.main;
 
 import java.net.URL;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Stack;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import steggersstudentregistration.be.Student;
 import steggersstudentregistration.bll.facade.IStundentRegistrationFacade;
+import steggersstudentregistration.gui.command.AddStudentCommand;
 import steggersstudentregistration.gui.command.ICommand;
+import steggersstudentregistration.gui.command.ICommandInvoker;
+import steggersstudentregistration.gui.model.AbsenceModel;
 import steggersstudentregistration.gui.model.MainModel;
 
 /**
  *
  * @author pgn
  */
-public class MainViewController implements Initializable
+public class MainViewController implements Initializable, ICommandInvoker
 {
 
     /**
@@ -42,12 +44,12 @@ public class MainViewController implements Initializable
     /**
      * List of commands that has been executed.
      */
-    private List<ICommand> executedCommands;
+    private Stack<ICommand> executedCommands;
 
     /**
      * List of commands that was previously executed but has then been undone.
      */
-    private List<ICommand> undoneCommands;
+    private Stack<ICommand> undoneCommands;
 
     @FXML
     private MenuItem menuClose;
@@ -65,8 +67,8 @@ public class MainViewController implements Initializable
      */
     public MainViewController()
     {
-        executedCommands = new LinkedList<>();
-        undoneCommands = new LinkedList<>();
+        executedCommands = new Stack<ICommand>();
+        undoneCommands = new Stack<ICommand>();
     }
 
     @Override
@@ -89,29 +91,41 @@ public class MainViewController implements Initializable
             mainModel = new MainModel();
         }
         mainModel.setStudentRegistrationFacade(facade);
+        
+        AbsenceModel absenceModel = new AbsenceModel(facade)
+        
     }
 
     @FXML
     private void handleUndo(ActionEvent event)
     {
-        
+        ICommand cmd = executedCommands.pop();
+        cmd.undo();
+        undoneCommands.add(cmd);
     }
 
     @FXML
     private void handleRedo(ActionEvent event)
     {
-        
+        ICommand cmd = undoneCommands.pop();
+        cmd.execute();
+        executedCommands.add(cmd);
     }
 
-    public void submitCommand(ICommand command)
+    @Override
+    public void submit(ICommand command)
     {
-        
+        command.execute();
+        executedCommands.add(command);
+        undoneCommands.clear();
     }
 
     @FXML
     private void handleAddStudent(ActionEvent event)
     {
         String studentName = txtStudent.getText().trim();
+        AddStudentCommand addStudentCmd = new AddStudentCommand(mainModel, studentName);
+        submit(addStudentCmd);
     }
 
 }

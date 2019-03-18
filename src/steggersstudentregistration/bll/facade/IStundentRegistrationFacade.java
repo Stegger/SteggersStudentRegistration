@@ -16,4 +16,6 @@ public interface IStundentRegistrationFacade
     Student createStudent(String name);
 
     public void removeStudent(Student student);
+
+    public Student[] getAllStudents();
 }
