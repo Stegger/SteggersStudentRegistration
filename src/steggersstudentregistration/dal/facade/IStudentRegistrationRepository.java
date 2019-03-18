@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package steggersstudentregistration.bll.facade;
+package steggersstudentregistration.dal.facade;
 
 import steggersstudentregistration.be.Student;
 
@@ -11,9 +11,7 @@ import steggersstudentregistration.be.Student;
  *
  * @author pgn
  */
-public interface IStundentRegistrationFacade
+public interface IStudentRegistrationRepository
 {
     Student createStudent(String name);
-
-    public void removeStudent(Student student);
 }

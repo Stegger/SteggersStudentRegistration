@@ -5,6 +5,9 @@
  */
 package steggersstudentregistration.bll.facade;
 
+import steggersstudentregistration.be.Student;
+import steggersstudentregistration.bll.student.StudentManager;
+
 /**
  *
  * @author pgn
@@ -14,11 +17,21 @@ public class MockUserFacade implements IStundentRegistrationFacade
 
     private static IStundentRegistrationFacade INSTANCE;
 
+    private StudentManager studentManager;
+
+    /**
+     * Constructs the MockUserFacade that implements the facade.
+     */
     private MockUserFacade()
     {
-        //Does nothing.
+        studentManager = new StudentManager();
     }
 
+    /**
+     * Singleton accessor/creater method...
+     *
+     * @return
+     */
     public static synchronized IStundentRegistrationFacade getInstance()
     {
         if (INSTANCE == null)
@@ -28,4 +41,16 @@ public class MockUserFacade implements IStundentRegistrationFacade
         return INSTANCE;
     }
 
+    @Override
+    public Student createStudent(String name)
+    {
+        return studentManager.createStudent(name);
+    }
+
+    @Override
+    public void removeStudent(Student student)
+    {
+        System.out.println("Student removed...");
+    }
+    
 }

@@ -23,7 +23,7 @@ public class SteggersStudentRegistration extends Application
     @Override
     public void start(Stage stage) throws Exception
     {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("view/main/MainView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("gui/view/main/MainView.fxml"));
         
         
         Parent root = loader.load();
