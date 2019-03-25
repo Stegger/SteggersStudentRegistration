@@ -6,6 +6,7 @@
 package steggersstudentregistration.bll.facade;
 
 import steggersstudentregistration.be.Student;
+import steggersstudentregistration.be.User;
 import steggersstudentregistration.bll.student.StudentManager;
 
 /**
@@ -15,9 +16,12 @@ import steggersstudentregistration.bll.student.StudentManager;
 public class MockUserFacade implements IStundentRegistrationFacade
 {
 
-    private static IStundentRegistrationFacade INSTANCE;
-
     private StudentManager studentManager;
+
+    static
+    {
+        StudentRegistrationFacadeFactory.instance().registerFacade(StudentRegistrationFacadeFactory.StudentRegistrationFacadeTypes.MOCK, new MockUserFacade());
+    }
 
     /**
      * Constructs the MockUserFacade that implements the facade.
@@ -25,20 +29,6 @@ public class MockUserFacade implements IStundentRegistrationFacade
     private MockUserFacade()
     {
         studentManager = new StudentManager();
-    }
-
-    /**
-     * Singleton accessor/creater method...
-     *
-     * @return
-     */
-    public static synchronized IStundentRegistrationFacade getInstance()
-    {
-        if (INSTANCE == null)
-        {
-            INSTANCE = new MockUserFacade();
-        }
-        return INSTANCE;
     }
 
     @Override
@@ -52,5 +42,22 @@ public class MockUserFacade implements IStundentRegistrationFacade
     {
         System.out.println("Student removed...");
     }
-    
+
+    @Override
+    public Student[] getAllStudents()
+    {
+        Student[] studs =
+        {
+            new Student(101, "Jeppe the Student"), new Student(102, "Silent Bob"), new Student(103, "Chatty Cat"), new Student(104, "Borris"), new Student(105, "Lil' Donald")
+        };
+        return studs;
+    }
+
+    @Override
+    public User logIn(String userName, String password)
+    {
+        User user = new User(1, userName);
+        return user;
+    }
+
 }

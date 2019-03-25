@@ -6,6 +6,7 @@
 package steggersstudentregistration.bll.facade;
 
 import steggersstudentregistration.be.Student;
+import steggersstudentregistration.be.User;
 
 /**
  *
@@ -18,4 +19,6 @@ public interface IStundentRegistrationFacade
     public void removeStudent(Student student);
 
     public Student[] getAllStudents();
+
+    public User logIn(String userName, String password);
 }

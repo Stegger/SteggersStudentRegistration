@@ -6,28 +6,26 @@
 package steggersstudentregistration.gui.view.main;
 
 import java.net.URL;
-import java.util.LinkedList;
 import java.util.ResourceBundle;
-import java.util.Stack;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import steggersstudentregistration.be.Student;
 import steggersstudentregistration.bll.facade.IStundentRegistrationFacade;
 import steggersstudentregistration.gui.command.AddStudentCommand;
-import steggersstudentregistration.gui.command.ICommand;
 import steggersstudentregistration.gui.command.ICommandInvoker;
-import steggersstudentregistration.gui.model.AbsenceModel;
 import steggersstudentregistration.gui.model.MainModel;
 
 /**
  *
  * @author pgn
  */
-public class MainViewController implements Initializable, ICommandInvoker
+public class MainViewController extends ICommandInvoker implements Initializable
 {
 
     /**
@@ -41,16 +39,6 @@ public class MainViewController implements Initializable, ICommandInvoker
      */
     private MainModel mainModel;
 
-    /**
-     * List of commands that has been executed.
-     */
-    private Stack<ICommand> executedCommands;
-
-    /**
-     * List of commands that was previously executed but has then been undone.
-     */
-    private Stack<ICommand> undoneCommands;
-
     @FXML
     private MenuItem menuClose;
     @FXML
@@ -61,15 +49,6 @@ public class MainViewController implements Initializable, ICommandInvoker
     private ListView<Student> lstStudents;
     @FXML
     private TextField txtStudent;
-
-    /**
-     * Constructs the Main View Controller.
-     */
-    public MainViewController()
-    {
-        executedCommands = new Stack<ICommand>();
-        undoneCommands = new Stack<ICommand>();
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
@@ -91,41 +70,58 @@ public class MainViewController implements Initializable, ICommandInvoker
             mainModel = new MainModel();
         }
         mainModel.setStudentRegistrationFacade(facade);
-        
-        AbsenceModel absenceModel = new AbsenceModel(facade)
-        
     }
 
     @FXML
     private void handleUndo(ActionEvent event)
     {
-        ICommand cmd = executedCommands.pop();
-        cmd.undo();
-        undoneCommands.add(cmd);
+        try
+        {
+            undo();
+        } catch (Exception ex)
+        {
+            displayError(ex, "You could not undo the last action!", "It's irreversible!");
+        }
     }
 
     @FXML
     private void handleRedo(ActionEvent event)
     {
-        ICommand cmd = undoneCommands.pop();
-        cmd.execute();
-        executedCommands.add(cmd);
-    }
-
-    @Override
-    public void submit(ICommand command)
-    {
-        command.execute();
-        executedCommands.add(command);
-        undoneCommands.clear();
+        try
+        {
+            redo();
+        } catch (Exception ex)
+        {
+            displayError(ex, "Could not redo action.", "Something that you previously could do can't be done again. Sucks...");
+        }
     }
 
     @FXML
     private void handleAddStudent(ActionEvent event)
     {
-        String studentName = txtStudent.getText().trim();
-        AddStudentCommand addStudentCmd = new AddStudentCommand(mainModel, studentName);
-        submit(addStudentCmd);
+        try
+        {
+            String studentName = txtStudent.getText().trim();
+            AddStudentCommand addStudentCmd = new AddStudentCommand(mainModel, studentName);
+            submit(addStudentCmd);
+        } catch (Exception ex)
+        {
+            displayError(ex, "Could not add student", "An error occured while trying to add a student. Please try again.");
+        }
+    }
+
+    /**
+     * Displays errormessages to the user.
+     *
+     * @param ex The Exception
+     */
+    private void displayError(Exception ex, String title, String header)
+    {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(ex.getMessage());
+        alert.showAndWait();
     }
 
 }

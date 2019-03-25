@@ -11,7 +11,7 @@ package steggersstudentregistration.gui.command;
  */
 public interface ICommand
 {
-    void execute();
+    void execute() throws Exception;
     
-    void undo();
+    void undo() throws Exception;
 }
