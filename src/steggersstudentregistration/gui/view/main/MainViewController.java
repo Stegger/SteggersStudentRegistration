@@ -5,34 +5,28 @@
  */
 package steggersstudentregistration.gui.view.main;
 
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
-import steggersstudentregistration.be.Student;
-import steggersstudentregistration.bll.facade.IStundentRegistrationFacade;
-import steggersstudentregistration.gui.command.AddStudentCommand;
+import javafx.scene.layout.BorderPane;
+import steggersstudentregistration.be.User;
 import steggersstudentregistration.gui.command.ICommandInvoker;
 import steggersstudentregistration.gui.model.MainModel;
+import steggersstudentregistration.gui.model.UserModel;
+import steggersstudentregistration.gui.utillities.SceneSwitcher;
+import steggersstudentregistration.gui.view.registerPresence.RegisterController;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
- *
  * @author pgn
  */
-public class MainViewController extends ICommandInvoker implements Initializable
-{
-
-    /**
-     * The facade exposing the functionality of the BLL but hides it's
-     * complexity.
-     */
-    private IStundentRegistrationFacade facade;
+public class MainViewController extends ICommandInvoker implements Initializable {
 
     /**
      * The model holding the state for this controller.
@@ -40,73 +34,38 @@ public class MainViewController extends ICommandInvoker implements Initializable
     private MainModel mainModel;
 
     @FXML
+    public BorderPane mainBorderPane;
+    /**
+     * The user model that holds the currently logged in user.
+     */
+    private UserModel userModel;
+    @FXML
     private MenuItem menuClose;
     @FXML
     private MenuItem menuUndo;
     @FXML
     private MenuItem menuRedo;
-    @FXML
-    private ListView<Student> lstStudents;
-    @FXML
-    private TextField txtStudent;
 
     @Override
-    public void initialize(URL url, ResourceBundle rb)
-    {
-        mainModel = new MainModel();
-        lstStudents.setItems(mainModel.getStudents());
-    }
+    public void initialize(URL url, ResourceBundle rb) {
 
-    /**
-     * Dependency injection method for the facade create at startup.
-     *
-     * @param facade
-     */
-    public void setStudentRegistrationFacade(IStundentRegistrationFacade facade)
-    {
-        this.facade = facade;
-        if (mainModel == null)
-        {
-            mainModel = new MainModel();
-        }
-        mainModel.setStudentRegistrationFacade(facade);
     }
 
     @FXML
-    private void handleUndo(ActionEvent event)
-    {
-        try
-        {
+    private void handleUndo(ActionEvent event) {
+        try {
             undo();
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             displayError(ex, "You could not undo the last action!", "It's irreversible!");
         }
     }
 
     @FXML
-    private void handleRedo(ActionEvent event)
-    {
-        try
-        {
+    private void handleRedo(ActionEvent event) {
+        try {
             redo();
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             displayError(ex, "Could not redo action.", "Something that you previously could do can't be done again. Sucks...");
-        }
-    }
-
-    @FXML
-    private void handleAddStudent(ActionEvent event)
-    {
-        try
-        {
-            String studentName = txtStudent.getText().trim();
-            AddStudentCommand addStudentCmd = new AddStudentCommand(mainModel, studentName);
-            submit(addStudentCmd);
-        } catch (Exception ex)
-        {
-            displayError(ex, "Could not add student", "An error occured while trying to add a student. Please try again.");
         }
     }
 
@@ -115,13 +74,28 @@ public class MainViewController extends ICommandInvoker implements Initializable
      *
      * @param ex The Exception
      */
-    private void displayError(Exception ex, String title, String header)
-    {
+    private void displayError(Exception ex, String title, String header) {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(ex.getMessage());
         alert.showAndWait();
+    }
+
+    public void setUserModel(UserModel userModel) throws IOException {
+        this.userModel = userModel;
+        if (mainModel == null) {
+            mainModel = new MainModel(userModel.getStudentRegistrationFacade());
+        }
+        if (this.userModel.getLoggedInUser().getRole() == User.Role.Teacher) {
+            //TODO Inject Teacher view
+        } else if (this.userModel.getLoggedInUser().getRole() == User.Role.Student) {
+            SceneSwitcher ss = new SceneSwitcher();
+            SceneSwitcher.SceneControllerBag scb = ss.getSceneControllerBag("/steggersstudentregistration/gui/view/registerPresence/RegisterView.fxml");
+            mainBorderPane.centerProperty().set(scb.getRoot());
+            RegisterController registerController = (RegisterController) scb.getController();
+            registerController.setUserModel(userModel);
+        }
     }
 
 }

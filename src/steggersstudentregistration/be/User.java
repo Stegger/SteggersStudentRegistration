@@ -5,51 +5,55 @@
  */
 package steggersstudentregistration.be;
 
-import javafx.beans.property.ReadOnlyIntegerProperty;
-import javafx.beans.property.ReadOnlyIntegerWrapper;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 
 /**
- *
  * @author pgn
  */
-public class User
-{
+public class User {
 
-    private final ReadOnlyIntegerWrapper id;
-    private final StringProperty name = new SimpleStringProperty();
-    
-    
-    public User(int id, String name)
-    {
-        this.id = new ReadOnlyIntegerWrapper(id);
-        this.name.setValue(name);
-    }
-    
-    public String getName()
-    {
-        return name.get();
+    private final ReadOnlyIntegerWrapper idProperty;
+    private final StringProperty nameProperty;
+    private final ObjectProperty<Role> roleProperty;
+
+    public User(int id, String name, Role role) {
+        idProperty = new ReadOnlyIntegerWrapper(id);
+        nameProperty = new SimpleStringProperty(name);
+        roleProperty = new SimpleObjectProperty<Role>(role);
     }
 
-    public void setName(String value)
-    {
-        name.set(value);
+    public String getName() {
+        return nameProperty.get();
     }
 
-    public StringProperty nameProperty()
-    {
-        return name;
-    }
-    
-    public int getId()
-    {
-        return id.get();
+    public void setName(String name) {
+        nameProperty.setValue(name);
     }
 
-    public ReadOnlyIntegerProperty idProperty()
-    {
-        return id;
+    public StringProperty nameProperty() {
+        return nameProperty;
     }
 
+    public int getId() {
+        return idProperty.get();
+    }
+
+    public ReadOnlyIntegerProperty idProperty() {
+        return idProperty;
+    }
+
+    public Role getRole() {
+        return roleProperty.get();
+    }
+
+    public ObjectProperty<Role> rolePropertyProperty() {
+        return roleProperty;
+    }
+
+    /**
+     * The role of a User. Defines access to areas of the application.
+     */
+    public enum Role {
+        Student, Teacher
+    }
 }

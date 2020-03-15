@@ -10,17 +10,11 @@ import steggersstudentregistration.bll.facade.IStudentRegistrationFacade;
 /**
  * @author pgn
  */
-public class MainModel extends BaseModel {
+public class PresenceModel extends BaseModel {
 
-    /**
-     * Main model constructor
-     */
-    public MainModel(IStudentRegistrationFacade facade) {
+    public PresenceModel(IStudentRegistrationFacade facade) {
         super(facade);
     }
-
-
-
 
 
 }
