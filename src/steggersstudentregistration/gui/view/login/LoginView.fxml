@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="AnchorPane" prefHeight="600.0" prefWidth="450.0"
-            xmlns="http://javafx.com/javafx/8.0.171"
+            xmlns="http://javafx.com/javafx/11.0.1"
             fx:controller="steggersstudentregistration.gui.view.login.LoginController">
     <children>
         <Label layoutX="181.0" layoutY="107.0" text="Log in" textAlignment="CENTER">
@@ -14,10 +13,12 @@
             </font>
         </Label>
         <TextField fx:id="txtUserName" layoutX="132.0" layoutY="242.0" promptText="Username..."/>
-        <Button layoutX="254.0" layoutY="436.0" mnemonicParsing="false" onAction="#handleLogIn" text="Log in"/>
-        <Button layoutX="194.0" layoutY="436.0" mnemonicParsing="false" onAction="#handleQuit" text="Quit"/>
+        <Button defaultButton="true" layoutX="182.0" layoutY="436.0" mnemonicParsing="false" onAction="#handleLogIn"
+                text="Log in"/>
+        <Button layoutX="132.0" layoutY="436.0" mnemonicParsing="false" onAction="#handleQuit" text="Quit"/>
         <CheckBox fx:id="checkRememberMe" layoutX="132.0" layoutY="341.0" mnemonicParsing="false"
                   onAction="#handleRememberMe" prefHeight="21.0" prefWidth="187.0" text="Remember me"/>
         <PasswordField fx:id="txtPassword" layoutX="132.0" layoutY="300.0" promptText="Password..."/>
+        <Button layoutX="243.0" layoutY="436.0" mnemonicParsing="false" onAction="#handleNewUser" text="Create user"/>
     </children>
 </AnchorPane>

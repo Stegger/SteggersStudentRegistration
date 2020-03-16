@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import steggersstudentregistration.gui.command.ICommandInvoker;
 import steggersstudentregistration.gui.model.UserModel;
 import steggersstudentregistration.gui.utillities.SceneSwitcher;
+import steggersstudentregistration.gui.view.createUser.CreateUserController;
 import steggersstudentregistration.gui.view.main.MainViewController;
 
 import java.io.IOException;
@@ -74,4 +75,12 @@ public class LoginController extends ICommandInvoker implements Initializable {
         this.userModel = userModel;
     }
 
+    @FXML
+    public void handleNewUser(ActionEvent event) throws IOException {
+        SceneSwitcher ss = new SceneSwitcher();
+        Node node = (Node) event.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        CreateUserController createUserController = ss.putSceneInStageNGetController("/steggersstudentregistration/gui/view/createUser/CreateUserView.fxml", stage);
+        createUserController.setUserModel(this.userModel);
+    }
 }

@@ -31,6 +31,8 @@ public class UserModel extends BaseModel {
 
     public boolean logIn(String userName, String password)
     {
+
+
         User user = facade.logIn(userName, password);
         loggedInUser.set(user);
         return true;
