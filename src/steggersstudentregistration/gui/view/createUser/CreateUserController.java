@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import steggersstudentregistration.bll.validation.IValidation;
+import steggersstudentregistration.bll.validation.ValidationFactory;
 import steggersstudentregistration.gui.model.UserModel;
 
 import java.net.URL;
@@ -33,12 +34,24 @@ public class CreateUserController implements Initializable {
 
     private UserModel userModel;
 
+    private IValidation emailValidator;
+    private IValidation userNameValidator;
+    private IValidation passwordValidator;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //TODO Setup validators for all fields
+        try {
+            emailValidator = ValidationFactory.CreateInputValidation(ValidationFactory.ValidationTypes.EMAIL);
+            passwordValidator = ValidationFactory.CreateInputValidation(ValidationFactory.ValidationTypes.PASSWORD);
 
-        //TODO Bind validators to fields
+
+            //TODO Bind validators to fields
+            bindValidation(txtEmail, lblEmailErr, emailValidator);
+            bindValidation(txtPassword, lblPasswordErr, passwordValidator);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void bindValidation(TextField txtField, Label errorMsg, IValidation validation) {

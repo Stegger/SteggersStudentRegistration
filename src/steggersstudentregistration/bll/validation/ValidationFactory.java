@@ -12,6 +12,13 @@ package steggersstudentregistration.bll.validation;
 public class ValidationFactory {
 
     /**
+     * Enum representing the different kinds of Validators this factory can create.
+     */
+    public enum ValidationTypes {
+        EMAIL, PASSWORD, USER_NAME
+    }
+
+    /**
      * Creates an input validation that matches the given input.
      *
      * @param type The type of input to validate.
@@ -57,8 +64,5 @@ public class ValidationFactory {
         throw new Exception("Can't create Validations without any IValidation's. Method CreateAndInputValidation requires at least one IValidation");
     }
 
-    public enum ValidationTypes {
-        EMAIL, PASSWORD, USER_NAME
-    }
 
 }
