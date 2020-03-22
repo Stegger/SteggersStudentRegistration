@@ -52,8 +52,9 @@ public class MockUserManager implements IUserFacade {
      * @return
      */
     @Override
-    public User[] getAllUsers() {
-        return (User[]) allUsers.toArray();
+    public List<User> getAllUsers() {
+
+        return allUsers;
     }
 
     /**

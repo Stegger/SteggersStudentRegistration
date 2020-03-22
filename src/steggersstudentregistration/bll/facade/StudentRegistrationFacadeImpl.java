@@ -5,6 +5,8 @@ import steggersstudentregistration.bll.security.ISecurityManager;
 import steggersstudentregistration.bll.security.SecurityManager;
 import steggersstudentregistration.bll.user.IUserFacade;
 
+import java.util.List;
+
 public class StudentRegistrationFacadeImpl implements IStudentRegistrationFacade {
 
     private IUserFacade userSystem;
@@ -45,7 +47,7 @@ public class StudentRegistrationFacadeImpl implements IStudentRegistrationFacade
      * @return
      */
     @Override
-    public User[] getAllUsers() {
+    public List<User> getAllUsers() {
         return userSystem.getAllUsers();
     }
 

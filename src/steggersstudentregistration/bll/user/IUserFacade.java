@@ -7,6 +7,8 @@ package steggersstudentregistration.bll.user;
 
 import steggersstudentregistration.be.User;
 
+import java.util.List;
+
 /**
  * @author pgn
  */
@@ -33,7 +35,7 @@ public interface IUserFacade {
      *
      * @return
      */
-    User[] getAllUsers();
+    List<User> getAllUsers();
 
     /**
      * Gets all users by a specific role.

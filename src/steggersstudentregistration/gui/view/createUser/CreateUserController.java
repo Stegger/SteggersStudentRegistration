@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import steggersstudentregistration.bll.validation.AbstractValidation;
 import steggersstudentregistration.bll.validation.IValidation;
 import steggersstudentregistration.bll.validation.ValidationFactory;
 import steggersstudentregistration.gui.model.UserModel;
@@ -31,12 +32,17 @@ public class CreateUserController implements Initializable {
     public Label lblEmailErr;
     @FXML
     public Label lblPasswordErr;
+    @FXML
+    public PasswordField txtPassword2;
+    @FXML
+    public Label lblPassword2err;
 
     private UserModel userModel;
 
     private IValidation emailValidator;
     private IValidation userNameValidator;
     private IValidation passwordValidator;
+    private IValidation passwordValidatorTwo;
 
 
     @Override
@@ -45,10 +51,22 @@ public class CreateUserController implements Initializable {
             emailValidator = ValidationFactory.CreateInputValidation(ValidationFactory.ValidationTypes.EMAIL);
             passwordValidator = ValidationFactory.CreateInputValidation(ValidationFactory.ValidationTypes.PASSWORD);
 
+            passwordValidatorTwo = new AbstractValidation() {
+                @Override
+                public boolean validateInput(String input) {
+                    if (!input.equals(txtPassword.getText().trim())) {
+                        validationMessage = "Passwords are not identical. Try again.";
+                        return false;
+                    }
+                    return true;
+                }
+            };
 
             //TODO Bind validators to fields
             bindValidation(txtEmail, lblEmailErr, emailValidator);
             bindValidation(txtPassword, lblPasswordErr, passwordValidator);
+            bindValidation(txtPassword2, lblPassword2err, passwordValidatorTwo);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

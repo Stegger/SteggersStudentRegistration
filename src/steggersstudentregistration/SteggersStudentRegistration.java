@@ -32,7 +32,11 @@ public class SteggersStudentRegistration extends Application
         //Dependency injection
         //Call a factory method for an object implementing the facade: DONE
         //The actual implementation of a facade is now hidden!
-        StudentRegistrationFacadeImpl facade = new StudentRegistrationFacadeImpl(UserFacadeFactory.instance().getFacade(UserFacadeFactory.UserFacadeTypes.MOCK));
+        StudentRegistrationFacadeImpl facade =
+                new StudentRegistrationFacadeImpl(
+                        UserFacadeFactory.instance().getFacade(UserFacadeFactory.UserFacadeTypes.MOCK));
+
+
         UserModel userModel = new UserModel(facade);
         controller.setUserModel(userModel);
 

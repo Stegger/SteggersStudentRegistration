@@ -19,6 +19,8 @@ public class UserModel extends BaseModel {
 
     public UserModel(IStudentRegistrationFacade facade) {
         super(facade);
+
+
     }
 
     public User getLoggedInUser() {

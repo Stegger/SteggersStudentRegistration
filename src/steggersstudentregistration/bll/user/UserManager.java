@@ -2,6 +2,8 @@ package steggersstudentregistration.bll.user;
 
 import steggersstudentregistration.be.User;
 
+import java.util.List;
+
 public class UserManager implements IUserFacade {
 
     /**
@@ -33,8 +35,8 @@ public class UserManager implements IUserFacade {
      * @return
      */
     @Override
-    public User[] getAllUsers() {
-        return new User[0];
+    public List<User> getAllUsers() {
+        return null;
     }
 
     /**
